@@ -1,8 +1,10 @@
 from os import path as ospath
-from LordFile import read_file, typical_readable_file_type, split_extension, get_folder_file_name
-from LordFile import listdir
+import os
+from LordFile import read_file, typical_readable_file_type, split_extension, get_folder_file_name, move_file
+from LordFile import listdir, makedirs
 from LordFile.opener import open_by_type
 from LordFile.dataset import ending_to_file_type
+from LordUtils.decorators import CachedProperty
 
 # LordThings
 from LordUtils import fn_match_value
@@ -26,6 +28,15 @@ class FileClass(object):
         if self._open is None:
             self._open = open_by_type(self.path, ending=self.ending)
         return self._open
+
+    @property
+    def extension(self):
+        """Alias zu ending"""
+        return self.ending
+
+    @property
+    def full_name(self):
+        return self.filename
 
     @property
     def data(self):
@@ -57,6 +68,13 @@ class FileClass(object):
             '__class__': self.__class__.__name__
         }
 
+    def move(self, target_path):
+        if not ospath.isdir(target_path):
+            makedirs(target_path)
+        new_path = ospath.join(target_path, self.filename)
+        os.rename(self.path, new_path)
+        self.path = new_path
+
     def __str__(self):
         return self.filename
 
@@ -70,27 +88,36 @@ class FolderClass(object):
     def __init__(self, path):
         self.path = path
         self.name = get_folder_file_name(self.path)
-        self._elements = None
 
-    def init_listdir(self):
-        self._elements = []
+    @CachedProperty
+    def elements(self):
+        elements = []
         _p = self.path
         for f in listdir(_p):
             full_path = ospath.join(_p, f)
             f = create_from_path(full_path)
-            self._elements.append(f)
+            elements.append(f)
+        return elements
+
+    @property
+    def full_name(self):
+        return self.name
+
+    @property
+    def all_files(self):
+        for f in self.elements:
+            if isinstance(f, FolderClass):
+                yield from f.all_files
+            else:
+                yield f
 
     @property
     def files(self):
-        if self._elements is None:
-            self.init_listdir()
-        return [f for f in self._elements if isinstance(f, FileClass)]
+        return [f for f in self.elements if isinstance(f, FileClass)]
 
     @property
     def folders(self):
-        if self._elements is None:
-            self.init_listdir()
-        return [f for f in self._elements if isinstance(f, FolderClass)]
+        return [f for f in self.elements if isinstance(f, FolderClass)]
 
     def to_json(self):
         return {
@@ -113,16 +140,21 @@ class FolderClass(object):
         for f in self.search(q):
             return f
 
+    def move(self, target_path):
+        if not ospath.isdir(target_path):
+            makedirs(target_path)
+        new_path = ospath.join(target_path, self.name)
+        os.rename(self.path, new_path)
+        self.path = new_path
+
     def __str__(self):
         return self.name
 
     def __iter__(self):
-        if self._elements is None:
-            self.init_listdir()
-        return iter(self._elements)
+        return iter(self.elements)
 
     def __reversed__(self):
-        return reversed(self._elements)
+        return reversed(self.elements)
 
     def __getitem__(self, key):  # => self[key]
         return self.__getattribute__(key)
@@ -133,13 +165,13 @@ class VirtualFolderClass(object):
 
     def __init__(self, name=None):
         self.name = name
-        self.elements = []
+        self.elements: list[FileClass, FolderClass] = []
 
-    def add(self, *elements):
+    def add(self, *elements: FolderClass | FileClass):
         for e in elements:
             self.elements.append(e)
 
-    def remove(self, *elements):
+    def remove(self, *elements: FolderClass | FileClass):
         for e in elements:
             if e in self.elements:
                 self.elements.remove(e)
@@ -153,7 +185,6 @@ class VirtualFolderClass(object):
             f = create_from_path(full_path)
             v.add(f)
 
-
     @property
     def files(self):
         return [f for f in self.elements if isinstance(f, FileClass)]
@@ -161,6 +192,14 @@ class VirtualFolderClass(object):
     @property
     def folders(self):
         return [f for f in self.elements if isinstance(f, FolderClass)]
+
+    @property
+    def all_files(self):
+        for f in self.elements:
+            if isinstance(f, FolderClass):
+                yield from f.all_files
+            else:
+                yield f
 
     def to_json(self):
         return {
@@ -182,6 +221,16 @@ class VirtualFolderClass(object):
     def search_one(self, q):
         for f in self.search(q):
             return f
+
+    def move(self, target_path):
+        for e in self.elements:
+            e.move(target_path)
+
+    def __iter__(self):
+        return iter(self.elements)
+
+    def __reversed__(self):
+        return reversed(self.elements)
 
 
 vffc_type = FileClass | FolderClass | VirtualFolderClass

@@ -6,6 +6,7 @@ file_type_to_endings = {
     'audio': ['mp3', 'aac', 'flac', 'm3u', 'm4b', 'wav'],
     'usenet': ['nzb'],
     'text': ['txt'],
+    'scene': ['nfo'],
     'archive': ['rar', 'zip', '7z', 'tar'],
     'documents': ['pdf', 'docs'],
     'code': ['py', 'js', 'html', 'css'],

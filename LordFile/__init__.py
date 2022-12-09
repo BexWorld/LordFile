@@ -110,6 +110,17 @@ def rename_folder(folder_path, new_name) -> str:
     return new_folder_path
 
 
+def move_file(file_path, target_path):
+    if isinstance(file_path, list):
+        for i in file_path:
+            move_file(i, target_path)
+        return
+    if not ospath.isdir(target_path):
+        makedirs(target_path)
+    file_name = get_folder_file_name(file_path)
+    os.rename(file_path, ospath.join(target_path, file_name))
+
+
 # save load Files
 
 typical_readable_file_endings = {

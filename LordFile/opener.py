@@ -58,7 +58,7 @@ class JsonOpener(Opener):
 
 
 class YamlOpener(Opener):
-    compatible_endings = ['yaml']
+    compatible_endings = ['yaml', 'yml']
 
     @staticmethod
     def load(file, default=None) -> dict:

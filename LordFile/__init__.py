@@ -1,7 +1,6 @@
 # os imports
 import os
 from os import path as ospath
-from os import makedirs
 
 # pip install regex
 import regex as re
@@ -41,6 +40,11 @@ def listdir(path, *, only_files=False, only_folders=False, as_fullpath=False):
 def mkdir(path):
     if not os.path.exists(path):
         os.mkdir(path)
+
+
+def makedirs(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 
 def clear_empty_folder(path):

@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name='LordFile',
-    version='0.0.1.0',
+    version='0.0.1.2',
     url='https://git.lordbex.xyz/PipModule/LordFile',
     license='',
     author='lordbex',

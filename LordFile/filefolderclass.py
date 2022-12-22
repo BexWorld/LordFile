@@ -128,16 +128,16 @@ class FolderClass(object):
             '__class__': self.__class__.__name__
         }
 
-    def search(self, q: str | list):
+    def search(self, *q: str | list):
         # check files
         for f in self.files:
             if fn_match_value(str(f), q):
                 yield f
         for f in self.folders:
-            yield from f.search(q)
+            yield from f.search(*q)
 
-    def search_one(self, q):
-        for f in self.search(q):
+    def search_one(self, *q):
+        for f in self.search(*q):
             return f
 
     def move(self, target_path):
@@ -210,16 +210,16 @@ class VirtualFolderClass(object):
             'folders': self.folders
         }
 
-    def search(self, q: str | list):
+    def search(self, *q: str | list):
         # check files
         for f in self.files:
             if fn_match_value(str(f), q):
                 yield f
         for f in self.folders:
-            yield from f.search(q)
+            yield from f.search(*q)
 
-    def search_one(self, q):
-        for f in self.search(q):
+    def search_one(self, *q):
+        for f in self.search(*q):
             return f
 
     def move(self, target_path):

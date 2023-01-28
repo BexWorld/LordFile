@@ -10,12 +10,12 @@ def read(fname):
 
 setup(
     name='LordFile',
-    version='0.0.1.2',
+    version='0.1.0',
     url='https://git.lordbex.xyz/PipModule/LordFile',
     license='',
     author='lordbex',
     author_email='lordibex@protonmail.com',
-    description='File Manager',
+    description='File Manager by LordBex',
     long_description=read('README.rst'),
     packages=find_packages(),
     platforms='any',

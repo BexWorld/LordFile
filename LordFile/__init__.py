@@ -207,6 +207,9 @@ def save_yaml(obj, path):
 def load_json(j, default=None):
     if os.path.isfile(j):
         j = read_file(j, None)
+    _strip = j.strip()
+    if not (_strip.endswith(('}', ']')) and _strip.startswith(('{', '['))):
+        return default
     if j is None:
         return default
 

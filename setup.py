@@ -11,7 +11,7 @@ def read(fname):
 setup(
     name='LordFile',
     version='0.1.0',
-    url='https://git.lordbex.xyz/PipModule/LordFile',
+    url='https://github.com/BexWorld/LordFile.git',
     license='',
     author='lordbex',
     author_email='lordibex@protonmail.com',

@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name='LordFile',
-    version='0.1.0',
+    version='0.1.1',
     url='https://github.com/BexWorld/LordFile.git',
     license='',
     author='lordbex',

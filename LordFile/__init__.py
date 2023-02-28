@@ -37,14 +37,16 @@ def listdir(path, *, only_files=False, only_folders=False, as_fullpath=False):
     return l
 
 
-def mkdir(path):
-    if not os.path.exists(path):
-        os.mkdir(path)
+def mkdir(*path):
+    for p in path:
+        if not os.path.exists(p):
+            os.mkdir(p)
 
 
-def makedirs(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
+def makedirs(*path):
+    for p in path:
+        if not os.path.exists(p):
+            os.makedirs(p)
 
 
 def clear_empty_folder(path):

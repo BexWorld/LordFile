@@ -1,0 +1,25 @@
+[project]
+name = "LordFile"
+version = "2023.03.05"
+description = "Helper Package for other Lord packages"
+readme = "README.rst"
+requires-python = ">=3.10"
+keywords = []
+authors = [
+    { email = "lordibex@protonmail.com", name = "lordbex" },
+]
+maintainers = [
+    { email = "lordibex@protonmail.com", name = "lordbex" },
+]
+classifiers = [
+]
+
+dependencies = [
+  'regex',
+  'pyyaml',
+  'LordUtils'
+]
+
+[project.urls]
+homepage = "https://git.lordbex.xyz/PipModule/LordFile"
+repository = "https://git.lordbex.xyz/PipModule/LordFile"

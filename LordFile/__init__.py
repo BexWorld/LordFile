@@ -19,7 +19,7 @@ from LordUtils.json_encoder import JEncoder
 patternFileName = re.compile(r'[\/\\\?\<\>\|\:\'\"\*,]')  # / \ ? < > | : ' " * ,
 
 # configs
-encodes = ["utf-8-sig", "utf-8", "utf-16"]
+encodes = ["utf-8-sig", "utf-8", "utf-16", "cp1252", "iso8859-1"]
 list_dir_filter = ['.DS_Store', '.git']
 
 
